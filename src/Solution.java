@@ -1,19 +1,45 @@
 import java.io.*;
-import java.math.*;
-import java.security.*;
-import java.text.*;
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.*;
-import java.util.regex.*;
 import java.util.stream.*;
+
+import static java.lang.Math.abs;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 
 class Result {
-    public static int anagram(String s){
+    public static int anagram(String s) {
+        int changes = 0;
+        int middle = s.length() / 2;
+        if ( s.length() % 2 != 0 ) {
+            return -1;
+        }
+        //String [] parts = {s.substring(0,middle),s.substring(middle)};
+        char[] char1 = s.substring(0, middle).toCharArray();
+        char[] char2 = s.substring(middle).toCharArray();
+        HashMap<Character, Integer> sub1 = new HashMap<Character, Integer>();
+        HashMap<Character, Integer> sub2 = new HashMap<Character, Integer>();
 
-        return 0;
+        for (char c : char1) {
+            if ( sub1.containsKey(c) ) {
+                sub1.put(c, sub1.get(c + 1));
+            } else {
+                sub1.put(c, 1);
+            }
+        }
+        for (char c : char2) {
+            if ( sub2.containsKey(c) ) {
+                sub2.put(c, sub2.get(c + 1));
+            } else {
+                sub2.put(c, 1);
+            }
+        }
+        for(char c : sub1.keySet())
+            if(sub1.containsKey(c) && sub2.containsKey(c)){
+            changes += abs(sub1.get(c) - sub2.get(c));
+            }
+            else
+                changes += sub1.get(c);
+
+        return changes;
     }
 }
 
